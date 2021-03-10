@@ -22,8 +22,12 @@ public class CustomerController {
     private final CustomerMapper customerMapper = CustomerMapper.INSTANCE;
 
     @PostMapping
-    public Customer createCustomer(@Valid @RequestBody CustomerInfoDto customerInfoDto) {
+    public CustomerInfoDto createCustomer(@Valid @RequestBody CustomerInfoDto customerInfoDto) {
         var customer = customerMapper.customerInfoDtoToCustomer(customerInfoDto);
-        return customerRepository.save(customer);
+        customer = customerRepository.save(customer);
+        var toReturn = new CustomerInfoDto();
+        toReturn.setCreditNumber(customer.getCreditId());
+        toReturn.setCustomer(customerMapper.customerToCustomerDto(customer));
+        return toReturn;
     }
 }

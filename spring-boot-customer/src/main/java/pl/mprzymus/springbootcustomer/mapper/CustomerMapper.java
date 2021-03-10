@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import pl.mprzymus.springbootcustomer.model.Customer;
+import pl.mprzymus.springbootcustomer.model.CustomerDto;
 import pl.mprzymus.springbootcustomer.model.CustomerInfoDto;
 
 @Mapper
@@ -17,4 +18,6 @@ public interface CustomerMapper {
     @Mapping(target = "surname", source = "customer.surname")
     @Mapping(target = "firstName", source = "customer.firstName")
     Customer customerInfoDtoToCustomer(CustomerInfoDto customerInfoDto);
+
+    CustomerDto customerToCustomerDto(Customer customer);
 }
