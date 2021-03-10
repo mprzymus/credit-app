@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomerInfoDto {
     private CustomerDto customer;
-    private String creditNumber;
+    private Long creditNumber;
 }

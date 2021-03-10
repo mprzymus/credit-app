@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mprzymus.springbootproduct.mapper.ProductMapper;
 import pl.mprzymus.springbootproduct.model.ProductInfoDto;
-import pl.mprzymus.springbootproduct.repository.ProductRepository;
+import pl.mprzymus.springbootproduct.service.ProductService;
 
 import javax.validation.Valid;
 
@@ -17,12 +17,11 @@ import javax.validation.Valid;
 public class ProductController {
 
     private final ProductMapper productMapper = ProductMapper.INSTANCE;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @PostMapping
     public ProductInfoDto createProduct(@Valid @RequestBody ProductInfoDto productInfoDto) {
-        var product = productMapper.productInfoDtoToProduct(productInfoDto);
-        var saved= productRepository.save(product);
+        var saved = productService.saveIfExists(productInfoDto);
         var dto = productMapper.productToProductDto(saved);
         var toReturn = new ProductInfoDto();
         toReturn.setCreditNumber(saved.getCreditId());
