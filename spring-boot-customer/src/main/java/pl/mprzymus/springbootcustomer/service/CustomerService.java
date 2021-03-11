@@ -31,7 +31,12 @@ public class CustomerService {
     public CustomerDtoList findAll() {
         var allIterable = customerRepository.findAll();
         var allList = StreamSupport.stream(allIterable.spliterator(), false)
-                .map(customerMapper::customerToCustomerDto)
+                .map(customer -> {
+                    var dtoInfo = new CustomerInfoDto();
+                    dtoInfo.setCreditNumber(customer.getCreditId());
+                    dtoInfo.setCustomer(customerMapper.customerToCustomerDto(customer));
+                    return dtoInfo;
+                })
                 .collect(Collectors.toList());
         var customerDtoList = new CustomerDtoList();
         customerDtoList.setCustomers(allList);
