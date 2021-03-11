@@ -14,6 +14,6 @@ import javax.persistence.Id;
 public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //credit number
     private String creditName;
 }

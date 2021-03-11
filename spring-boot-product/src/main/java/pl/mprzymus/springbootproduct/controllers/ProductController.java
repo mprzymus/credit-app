@@ -19,12 +19,8 @@ public class ProductController {
 
     @PostMapping
     public ProductInfoDto createProduct(@Valid @RequestBody ProductInfoDto productInfoDto) {
-        var saved = productService.saveIfExists(productInfoDto);
-        var dto = productMapper.productToProductDto(saved);
-        var toReturn = new ProductInfoDto();
-        toReturn.setCreditNumber(saved.getCreditId());
-        toReturn.setProduct(dto);
-        return toReturn;
+        return productService.saveIfExists(productInfoDto);
+
     }
 
     @GetMapping

@@ -2,17 +2,15 @@ package pl.mprzymus.springbootcredit.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import pl.mprzymus.springbootcredit.model.dto.*;
+import pl.mprzymus.springbootcredit.service.CreditInfoCreationService;
 import pl.mprzymus.springbootcredit.service.CreditService;
-import pl.mprzymus.springbootcredit.model.dto.CreditInfo;
-import pl.mprzymus.springbootcredit.model.dto.CustomerInfoDto;
-import pl.mprzymus.springbootcredit.model.dto.ProductInfoDto;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -20,29 +18,37 @@ import javax.validation.Valid;
 @RequestMapping("api/credits")
 public class CreditController {
 
+    public static final String PRODUCTS_URL = "http://product-service/api/products";
+    public static final String CUSTOMERS_URL = "http://customer-service/api/customers";
     private final RestTemplate restTemplate;
     private final CreditService creditService;
+    private final CreditInfoCreationService creditInfoCreationService;
 
     @PostMapping
-    public String createCredits(@RequestBody @Valid CreditInfo creditInfo) {
-        log.info("Called");
-        var number = createCreditNumber();
+    public CreditNumberDto createCredits(@RequestBody @Valid CreditInfo creditInfo) {
+        log.info("New credit for user {} {}", creditInfo.getCustomer().getFirstName(),
+                creditInfo.getCustomer().getSurname() );
         var productInfoDto = new ProductInfoDto();
-        var saved = creditService.saveIfExists(creditInfo.getCredit().getCreditName());
+        var saved = creditService.saveCredit(creditInfo.getCredit().getCreditName());
         productInfoDto.setCreditNumber(saved.getId());
         productInfoDto.setProduct(creditInfo.getProduct());
         restTemplate.postForObject
-                ("http://product-service/api/products", productInfoDto, String.class);
+                (PRODUCTS_URL, productInfoDto, String.class);
         var customerInfoDto = new CustomerInfoDto();
         customerInfoDto.setCustomer(creditInfo.getCustomer());
         customerInfoDto.setCreditNumber(saved.getId());
         restTemplate.postForObject
-                ("http://customer-service/api/customers", customerInfoDto, String.class);
-        return number;
+                (CUSTOMERS_URL, customerInfoDto, String.class);
+        return new CreditNumberDto(saved.getId());
     }
 
-    private String createCreditNumber() {
-        //TODO generate number
-        return "someNumber1";
+    @GetMapping
+    public CreditInfoList getCredits() {
+        var credits = creditService.getCredits();
+        var customers = restTemplate.getForObject(CUSTOMERS_URL, CustomerDtoList.class);
+        var products = restTemplate.getForObject(PRODUCTS_URL, ProductDtoList.class);
+        HashMap<Long, CustomerDto> customersMap = creditInfoCreationService.createCustomersMap(customers);
+        HashMap<Long, ProductDto> productsMap = creditInfoCreationService.createProductsMap(products);
+        return creditInfoCreationService.createCreditInfoList(productsMap, customersMap, credits);
     }
 }

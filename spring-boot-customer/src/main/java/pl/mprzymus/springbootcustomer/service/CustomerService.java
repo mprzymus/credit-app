@@ -17,10 +17,8 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
-    public CustomerInfoDto saveOrUpdate(CustomerInfoDto customer) {
-        var found = customerRepository.findByPesel(customer.getCustomer().getPesel());
+    public CustomerInfoDto saveCustomer(CustomerInfoDto customer) { // just save because customer in db is related to one credit
         var toSave = customerMapper.customerInfoDtoToCustomer(customer);
-        found.ifPresent(value -> toSave.setId(value.getId()));
         var saved = customerRepository.save(toSave);
         var toReturn = new CustomerInfoDto();
         toReturn.setCreditNumber(saved.getCreditId());

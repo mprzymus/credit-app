@@ -18,7 +18,7 @@ public class CustomerController {
 
     @PostMapping
     public CustomerInfoDto createCustomer(@Valid @RequestBody CustomerInfoDto customerInfoDto) {
-        return customerService.saveOrUpdate(customerInfoDto);
+        return customerService.saveCustomer(customerInfoDto);
     }
 
     @GetMapping

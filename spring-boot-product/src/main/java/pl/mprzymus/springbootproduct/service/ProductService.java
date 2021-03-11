@@ -18,16 +18,14 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    public Product saveIfExists(ProductInfoDto product) {
-        var foundOptional = productRepository.findByProductNameAndCreditId
-                (product.getProduct().getProductName(), product.getCreditNumber());
-        if (foundOptional.isEmpty()) {
-            var toSave = productMapper.productInfoDtoToProduct(product);
-            return productRepository.save(toSave);
-        }
-        else {
-            return updateValue(product, foundOptional.get());
-        }
+    public ProductInfoDto saveIfExists(ProductInfoDto product) {
+        var toSave = productMapper.productInfoDtoToProduct(product);
+        var saved = productRepository.save(toSave);
+        var dto = productMapper.productToProductDto(saved);
+        var toReturn = new ProductInfoDto();
+        toReturn.setCreditNumber(saved.getCreditId());
+        toReturn.setProduct(dto);
+        return toReturn;
     }
 
     private Product updateValue(ProductInfoDto product, Product found) {

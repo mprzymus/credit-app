@@ -11,13 +11,13 @@ public class CreditService {
 
     private final CreditRepository creditRepository;
 
-    public Credit saveIfExists(String credit) {
-        var found = creditRepository.findByCreditName(credit);
-        if (found.isEmpty()) {
-            var toSave = new Credit();
-            toSave.setCreditName(credit);
-            return creditRepository.save(toSave);
-        }
-        return found.get();
+    public Credit saveCredit(String creditName) {
+        var credit = new Credit();
+        credit.setCreditName(creditName);
+        return creditRepository.save(credit);
+    }
+
+    public Iterable<Credit> getCredits() {
+        return creditRepository.findAll();
     }
 }
