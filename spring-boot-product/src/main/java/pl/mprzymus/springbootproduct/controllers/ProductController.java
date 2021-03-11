@@ -1,11 +1,9 @@
 package pl.mprzymus.springbootproduct.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.mprzymus.springbootproduct.mapper.ProductMapper;
+import pl.mprzymus.springbootproduct.model.ProductDtoList;
 import pl.mprzymus.springbootproduct.model.ProductInfoDto;
 import pl.mprzymus.springbootproduct.service.ProductService;
 
@@ -27,5 +25,10 @@ public class ProductController {
         toReturn.setCreditNumber(saved.getCreditId());
         toReturn.setProduct(dto);
         return toReturn;
+    }
+
+    @GetMapping
+    public ProductDtoList getProducts() {
+        return productService.findAll();
     }
 }
