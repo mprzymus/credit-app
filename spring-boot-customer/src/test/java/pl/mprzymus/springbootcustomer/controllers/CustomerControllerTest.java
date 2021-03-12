@@ -76,7 +76,6 @@ class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(customerInfoDto)))
                 .andExpect(status().isCreated())
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(jsonPath("$.customer.firstName", equalTo(FIRST_NAME)))
                 .andExpect(jsonPath("$.customer.surname", equalTo(SURNAME)))
                 .andExpect(jsonPath("$.customer.pesel", equalTo(PESEL)));
