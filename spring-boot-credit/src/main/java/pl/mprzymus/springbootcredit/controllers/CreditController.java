@@ -2,6 +2,7 @@ package pl.mprzymus.springbootcredit.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import pl.mprzymus.springbootcredit.model.dto.*;
@@ -24,6 +25,7 @@ public class CreditController {
     private final CreditInfoCreationService creditInfoCreationService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CreditNumberDto createCredits(@RequestBody @Valid CreditInfo creditInfo) {
         log.info("New credit for user {} {}", creditInfo.getCustomer().getFirstName(),
                 creditInfo.getCustomer().getSurname() );
