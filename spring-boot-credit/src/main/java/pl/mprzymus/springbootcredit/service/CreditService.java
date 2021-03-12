@@ -12,12 +12,17 @@ public class CreditService {
     private final CreditRepository creditRepository;
 
     public Credit saveCredit(String creditName) {
-        var credit = new Credit();
-        credit.setCreditName(creditName);
+        Credit credit = createCreditWithName(creditName);
         return creditRepository.save(credit);
     }
 
-    public Iterable<Credit> getCredits() {
+    private Credit createCreditWithName(String creditName) {
+        var credit = new Credit();
+        credit.setCreditName(creditName);
+        return credit;
+    }
+
+    public Iterable<Credit> findAllCredits() {
         return creditRepository.findAll();
     }
 }

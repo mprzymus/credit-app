@@ -19,7 +19,7 @@ public class ProductController {
 
     @PostMapping
     public ProductInfoDto createProduct(@Valid @RequestBody ProductInfoDto productInfoDto) {
-        return productService.saveIfExists(productInfoDto);
+        return productService.saveProduct(productInfoDto);
 
     }
 

@@ -9,7 +9,6 @@ import pl.mprzymus.springbootcredit.service.CreditInfoCreationService;
 import pl.mprzymus.springbootcredit.service.CreditService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Slf4j
@@ -44,7 +43,7 @@ public class CreditController {
 
     @GetMapping
     public CreditInfoList getCredits() {
-        var credits = creditService.getCredits();
+        var credits = creditService.findAllCredits();
         var customers = restTemplate.getForObject(CUSTOMERS_URL, CustomerDtoList.class);
         var products = restTemplate.getForObject(PRODUCTS_URL, ProductDtoList.class);
         HashMap<Long, CustomerDto> customersMap = creditInfoCreationService.createCustomersMap(customers);

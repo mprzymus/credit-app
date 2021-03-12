@@ -18,7 +18,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    public ProductInfoDto saveIfExists(ProductInfoDto product) {
+    public ProductInfoDto saveProduct(ProductInfoDto product) {
         var toSave = productMapper.productInfoDtoToProduct(product);
         var saved = productRepository.save(toSave);
         var dto = productMapper.productToProductDto(saved);
@@ -26,11 +26,6 @@ public class ProductService {
         toReturn.setCreditNumber(saved.getCreditId());
         toReturn.setProduct(dto);
         return toReturn;
-    }
-
-    private Product updateValue(ProductInfoDto product, Product found) {
-        found.setValue(product.getProduct().getValue());
-        return productRepository.save(found);
     }
 
     public ProductDtoList findAll() {
