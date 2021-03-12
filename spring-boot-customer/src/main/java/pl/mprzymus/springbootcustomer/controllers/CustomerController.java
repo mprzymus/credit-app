@@ -2,6 +2,7 @@ package pl.mprzymus.springbootcustomer.controllers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.mprzymus.springbootcustomer.model.CustomerDtoList;
 import pl.mprzymus.springbootcustomer.model.CustomerInfoDto;
@@ -17,6 +18,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CustomerInfoDto createCustomer(@Valid @RequestBody CustomerInfoDto customerInfoDto) {
         return customerService.saveCustomer(customerInfoDto);
     }
