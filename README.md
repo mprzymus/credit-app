@@ -1,4 +1,14 @@
 # credit-app
+## Deployment
+
+-Jdk 15 needed
+
+Build database image (in project root directory): docker build -t *image_name* .
+Run container: docker run -d --name *container_name* -p 5432:5432 *image_name*
+
+Then start each service with mvn spring-boot:start
+
+
 ## API
 ### Credit service
 #### /api/credits post - add credit, returns credit number
