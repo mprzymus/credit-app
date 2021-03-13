@@ -12,5 +12,12 @@
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
+
+    <modules>
+        <module>eureka-server</module>
+        <module>spring-boot-credit</module>
+        <module>spring-boot-customer</module>
+        <module>spring-boot-customer</module>
+    </modules>
     
 </project>
